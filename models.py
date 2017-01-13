@@ -1,6 +1,31 @@
-# Here will be catalog models for SQLAlchemy
+from sqlalchemy.orm import relationship, sessionmaker
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import create_engine
+Base = declarative_base()
 
-# FIXME move catalog to db
+
+class Catalog(Base):
+    __tablename__ = 'catalog'
+    id = Column(Integer, primary_key=True)
+    title = Column(String)
+    description = Column(String)
+    choices = relationship('Choice')
+
+
+class Choice(Base):
+    __tablename__ = 'choice'
+    id = Column(Integer, primary_key=True)
+    parent_id = Column(Integer, ForeignKey('catalog.id'))
+    title = Column(String)
+    price = Column(Integer)
+
+
+engine = create_engine('sqlite:///pizza.db')
+Base.metadata.create_all(engine)
+Session = sessionmaker(bind=engine)
+session = Session()
+
 catalog = [
     {
         'title': 'Маргарита',
@@ -213,3 +238,17 @@ catalog = [
         ],
     },
 ]
+
+
+for item in catalog:
+    new_item = Catalog()
+    new_item.title = item['title']
+    new_item.description = item['description']
+    for choice in item['choices']:
+        choices = Choice()
+        choices.title = choice['title']
+        choices.price = choice['price']
+        new_item.choices.append(choices)
+    session.add(new_item)
+
+session.commit()
