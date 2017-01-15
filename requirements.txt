@@ -1,2 +1,5 @@
 pytelegrambotapi==2.3.0
 jinja2==2.8
+flask==0.11.1
+flask-admin==1.4.2
+sqlalchemy==1.1.4
