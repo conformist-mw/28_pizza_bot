@@ -1,10 +1,15 @@
 import telebot
 from jinja2 import Template
-from os import getenv
+# from os import getenv
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from models import Catalog
 
-from models import catalog
-
-TOKEN = getenv('BOT_TOKEN')
+engine = create_engine('sqlite:///pizza.db')
+Session = sessionmaker(bind=engine)
+session = Session()
+TOKEN = '***REMOVED***'
+# TOKEN = getenv('***REMOVED***')
 if not TOKEN:
     raise Exception('BOT_TOKEN should be specified')
 
@@ -16,13 +21,19 @@ with open('templates/catalog.md', 'r') as catalog_file:
 with open('templates/greetings.md', 'r') as greetings_file:
     greetings_tmpl = Template(greetings_file.read())
 
+
 @bot.message_handler(commands=['start'])
 def greet(message):
     bot.send_message(message.chat.id, greetings_tmpl.render())
 
+
 @bot.message_handler(commands=['menu'])
 def show_catalog(message):
-    bot.send_message(message.chat.id, catalog_tmpl.render(catalog=catalog), parse_mode='Markdown')
+    catalog = session.query(Catalog).all()
+    bot.send_message(message.chat.id,
+                     catalog_tmpl.render(
+                         catalog=catalog), parse_mode='Markdown')
+
 
 if __name__ == '__main__':
     bot.polling(none_stop=True)
