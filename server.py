@@ -24,7 +24,6 @@ class MyModelView(ModelView):
 
     def is_accessible(self):
         auth = request.authorization
-        print(auth)
         if not auth or not self.check_auth(auth.username, auth.password):
             raise AuthException('Not authenticated.')
         return True
