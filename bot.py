@@ -6,8 +6,8 @@ from sqlalchemy.orm import sessionmaker
 from models import Catalog
 
 engine = create_engine(getenv('db_uri'))
-Session = sessionmaker(bind=engine)
-session = Session()
+new_session = sessionmaker(bind=engine)
+session = new_session()
 TOKEN = getenv('TOKEN')
 if not TOKEN:
     raise Exception('BOT_TOKEN should be specified')
