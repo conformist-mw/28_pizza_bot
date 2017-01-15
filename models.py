@@ -1,7 +1,7 @@
-from sqlalchemy.orm import relationship, sessionmaker
+from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import create_engine
+
 Base = declarative_base()
 
 
@@ -12,19 +12,21 @@ class Catalog(Base):
     description = Column(String)
     choices = relationship('Choice')
 
+    def __str__(self):
+        return '{} {}'.format(self.title, self.description)
+
 
 class Choice(Base):
     __tablename__ = 'choice'
     id = Column(Integer, primary_key=True)
     parent_id = Column(Integer, ForeignKey('catalog.id'))
+    catalog = relationship('Catalog')
     title = Column(String)
     price = Column(Integer)
 
+    def __str__(self):
+        return '{} - {} руб.'.format(self.title, self.price)
 
-engine = create_engine('sqlite:///pizza.db')
-Base.metadata.create_all(engine)
-Session = sessionmaker(bind=engine)
-session = Session()
 
 catalog = [
     {
@@ -238,17 +240,3 @@ catalog = [
         ],
     },
 ]
-
-
-for item in catalog:
-    new_item = Catalog()
-    new_item.title = item['title']
-    new_item.description = item['description']
-    for choice in item['choices']:
-        choices = Choice()
-        choices.title = choice['title']
-        choices.price = choice['price']
-        new_item.choices.append(choices)
-    session.add(new_item)
-
-session.commit()
