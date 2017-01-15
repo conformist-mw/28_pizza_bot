@@ -1,19 +1,33 @@
 # Telegram Bot for Pizzeria
 
-[TODO. There will be project description]
+Данный проект позволяет запустить telegram-бота, который будет показывать меню из базы данных. Базу можно редактировать по [адресу](http://localhost:5000). В составе проекта есть скрипт, который создаёт базу и выполняет первичную загрузку данных.
 
-# How to Use
+## Подготовка
 
-Step 1. Register new telegram bot for development purposes, get the new token. [@BotFather](https://telegram.me/botfather)
+- зарегистрировать нового бота для разработки и получить токен [@BotFather](https://telegram.me/botfather)
+- записать токен в файл envvars, а также адрес БД, логин/пароль для администратора
 
-Step 2. Launch
-
+## Первичная настройка
+Для объявления всех переменных выполнить в терминале:
+```bash
+source envvars
 ```
-#!bash
-
-$ # the token below is not actual, you need to register a new one
-$ BOT_TOKEN="110831855:AAE_GbIeVAUwk11O12vq4UeMnl20iADUtM" python3 bot.py
+Установить все необходимые зависимости:
 ```
+pip3 install -r requirements.txt
+```
+Создать БД:
+```
+python3 create_db.py
+```
+
+## Запуск
+Для запуска выполняем в терминале:
+```
+python3 server.py &
+python3 bot.py &
+```
+
 # Project Goals
 
 The code is written for educational purposes. Training course for web-developers - [DEVMAN.org](https://devman.org)
