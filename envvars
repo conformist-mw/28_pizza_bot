@@ -1,0 +1,3 @@
+export login='admin'
+export passwd='pa$$w0rd'
+export db_uri='sqlite:///pizza.db'
