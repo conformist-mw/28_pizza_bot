@@ -1,15 +1,14 @@
+from os import getenv
 import telebot
 from jinja2 import Template
-# from os import getenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import Catalog
 
-engine = create_engine('sqlite:///pizza.db')
+engine = create_engine(getenv('db_uri'))
 Session = sessionmaker(bind=engine)
 session = Session()
-TOKEN = '***REMOVED***'
-# TOKEN = getenv('***REMOVED***')
+TOKEN = getenv('TOKEN')
 if not TOKEN:
     raise Exception('BOT_TOKEN should be specified')
 
