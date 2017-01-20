@@ -2,10 +2,10 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 
-Base = declarative_base()
+base_class = declarative_base()
 
 
-class Catalog(Base):
+class Catalog(base_class):
     __tablename__ = 'catalog'
     id = Column(Integer, primary_key=True)
     title = Column(String)
@@ -16,7 +16,7 @@ class Catalog(Base):
         return '{} {}'.format(self.title, self.description)
 
 
-class Choice(Base):
+class Choice(base_class):
     __tablename__ = 'choice'
     id = Column(Integer, primary_key=True)
     parent_id = Column(Integer, ForeignKey('catalog.id'))

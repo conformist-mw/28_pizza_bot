@@ -2,10 +2,11 @@ from models import Base, Catalog, Choice, catalog
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from os import getenv
+
 engine = create_engine(getenv('db_uri'))
 Base.metadata.create_all(engine)
-new_session = sessionmaker(bind=engine)
-session = new_session()
+session_class = sessionmaker(bind=engine)
+session = session_class()
 for item in catalog:
     new_item = Catalog()
     new_item.title = item['title']

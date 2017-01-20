@@ -30,10 +30,10 @@ class MyModelView(ModelView):
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '123456790'
+app.config['SECRET_KEY'] = getenv('SECRET')
 engine = create_engine(getenv('db_uri'))
-new_session = sessionmaker(bind=engine)
-session = new_session()
+session_class = sessionmaker(bind=engine)
+session = session_class()
 admin = Admin(app, name='pizza-bot', template_mode='bootstrap3')
 admin.add_view(MyModelView(Catalog, session))
 admin.add_view(MyModelView(Choice, session))
