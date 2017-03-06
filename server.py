@@ -30,7 +30,7 @@ class MyModelView(ModelView):
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = getenv('SECRET')
+app.config['SECRET_KEY'] = getenv('SECRET_KEY')
 engine = create_engine(getenv('db_uri'))
 session_class = sessionmaker(bind=engine)
 session = session_class()
